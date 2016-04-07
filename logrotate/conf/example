@@ -1,0 +1,10 @@
+/tmp/test.log {
+    daily
+    rotate 14
+    olddir /tmp/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}

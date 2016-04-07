@@ -1,0 +1,43 @@
+/var/log/marm/sgtn/*.log {
+    daily
+    rotate 14
+    olddir /var/log/marm/sgtn/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}
+
+/var/log/marm/sgtn/cron/*.log {
+    daily
+    rotate 14
+    olddir /var/log/marm/sgtn/cron/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}
+
+/var/log/marm/sgtn/service/*.log {
+    daily
+    rotate 14
+    olddir /var/log/marm/sgtn/service/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}
+
+/var/log/marm/integrator/box-requests/sgtn/*.log {
+    daily
+    rotate 14
+    olddir /var/log/marm/integrator/box-requests/sgtn/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}

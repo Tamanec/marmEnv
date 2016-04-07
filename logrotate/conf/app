@@ -1,0 +1,9 @@
+/var/log/php/*.log {
+    daily
+    rotate 14
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}

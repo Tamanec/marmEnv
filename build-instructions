@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+########################
+# Неверсионируемые образы (используются в нескольких network'ах)
+#
+# marm-server-fs
+# marm-data-fs
+# marm-data-userfiles
+# marm-memcached
+########################
+
+PROJECT=sgtn
+
+# base image
+docker build -t marm-os ./os/
+
+# php
+docker build -t marm-app ./app/
+
+# servers
+docker build -t marm-nginx ./nginx/
+docker build -t marm-server-box --build-arg CONF_NAME=box.conf ./server/
+docker build -t marm-server-integrator --build-arg CONF_NAME=integrator.conf ./server/
+docker build -t marm-server-fs --build-arg CONF_NAME=fs.conf ./server/
+
+########### DATA ##############
+
+# projects
+docker build -t marm-data-box:2.4.9 --build-arg SOURCE_NAME=box ./data/www/ && \
+    docker tag marm-data-box:2.4.9 marm-data-box:latest
+docker build -t marm-data-integrator:2.4.9 --build-arg SOURCE_NAME=integrator ./data/www/ && \
+    docker tag marm-data-integrator:2.4.9 marm-data-integrator:latest
+docker build -t marm-data-fs --build-arg SOURCE_NAME=fs ./data/www/
+
+# logs
+docker build -t marm-data-log-${PROJECT} --build-arg PROJECT_NAME=${PROJECT} ./data/log/
+
+# userfiles
+docker build -t marm-data-userfiles ./data/userfiles/
+
+###############################
+
+# cron
+docker build -t marm-cron-${PROJECT} --build-arg CONF_NAME=${PROJECT} ./cron
+
+# logrotate
+docker build -t marm-logrotate-${PROJECT} --build-arg CONF_NAME=${PROJECT} ./logrotate
+docker build -t marm-logrotate-nginx --build-arg CONF_NAME=nginx ./logrotate
+docker build -t marm-logrotate-php --build-arg CONF_NAME=php ./logrotate
+
+# memcached
+docker build -t marm-memcached ./memcached

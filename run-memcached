@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
+
+# memcached
+
+docker run -d --name marm-memcached \
+    -p 11211:11211 \
+    ${LOG_OPTS} \
+    marm-memcached

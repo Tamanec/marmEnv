@@ -1,0 +1,27 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=marm2-dev@altarix.ru
+
+INTEGRATOR=/var/www/integrator
+BOX=/var/www/box
+LOGS_PATH=/var/log/marm/sgtn/cron
+
+#--- СГТН ---#
+# x-marm-version: 2.4.9
+# x-marm-token: sgtn
+# x-project-version: v1d5
+
+# import docs
+0 8-20/1 * * * root ${INTEGRATOR}/protected/yiic sgtn import >> ${LOGS_PATH}/sgtn-import.log 2>&1
+
+# генерация выездов
+
+0-5 2 * * * root /var/scripts/sgtn_visits_generator.sh >> ${LOGS_PATH}/cron.log 2>&1
+
+# export carChecks
+*/5 * * * * root ${INTEGRATOR}/protected/yiic sgtn exportCarCheck >> ${LOGS_PATH}/sgtn-export.log 2>&1
+
+# export photo
+*/10 * * * * root ${INTEGRATOR}/protected/yiic sgtn sendPhoto --type=carUnitNumberCheck >> ${LOGS_PATH}/sgtn-sendPhoto.log 2>&1
+*/11 * * * * root ${INTEGRATOR}/protected/yiic sgtn sendPhoto --type=carDocumentCheck >> ${LOGS_PATH}/sgtn-sendPhoto.log 2>&1
+*/12 * * * * root ${INTEGRATOR}/protected/yiic sgtn sendPhoto --type=techInspection >> ${LOGS_PATH}/sgtn-sendPhoto.log 2>&1
