@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
-VERSION=2.4.9
-BUILD=3
-FULL_VERSION=${VERSION}.${BUILD}
-NETWORK=marm-${FULL_VERSION}
-PROJECT=sgtn
-FULL_NAME=${PROJECT}-${FULL_VERSION}
+[ -z $1 ] && echo "Please specify project name" && exit 1
+[ -z $2 ] && echo "Please specify box version" && exit 1
+[ -z $3 ] && echo "Please specify build number" && exit 1
+[ -z $4 ] && echo "Please specify port number for box" && exit 1
 
-BOX_PORT=4${FULL_VERSION//./}
+PROJECT=$1
+VERSION=$2
+BUILD=$3
+BOX_PORT=$4
+
+FULL_VERSION=${VERSION}.${BUILD}
+FULL_NAME=${PROJECT}-${FULL_VERSION}
+NETWORK=marm-${FULL_NAME}
+#BOX_PORT=4${FULL_VERSION//./} - старая версия
+
 
 LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
 
@@ -17,40 +24,40 @@ docker network create ${NETWORK}
 
 # data (code, logs ...)
 
-docker create --name marm-data-box-${FULL_VERSION} marm-data-box:${VERSION}
-docker create --name marm-data-integrator-${FULL_VERSION} marm-data-integrator:${VERSION}
+docker create --name marm-data-box-${FULL_NAME} marm-data-box-${PROJECT}:${VERSION}
+docker create --name marm-data-integrator-${FULL_NAME} marm-data-integrator-${PROJECT}:${VERSION}
 docker create --name marm-data-log-${FULL_NAME} marm-data-log-${PROJECT}
 
-# php
+# php (box, integrator)
 
-docker run -d --name marm-app-box-${FULL_VERSION} \
+docker run -d --name marm-app-box-${FULL_NAME} \
     --net ${NETWORK} \
     --net-alias marm-app-box \
-    --volumes-from marm-data-box-${FULL_VERSION} \
+    --volumes-from marm-data-box-${FULL_NAME} \
     --volumes-from marm-data-log-${FULL_NAME} \
     --volumes-from marm-data-userfiles \
     ${LOG_OPTS} \
     marm-app
 
-docker run -d --name marm-app-integrator-${FULL_VERSION} \
+docker run -d --name marm-app-integrator-${FULL_NAME} \
     --net ${NETWORK} \
     --net-alias marm-app-integrator \
-    --volumes-from marm-data-integrator-${FULL_VERSION} \
+    --volumes-from marm-data-integrator-${FULL_NAME} \
     --volumes-from marm-data-log-${FULL_NAME} \
     --volumes-from marm-data-userfiles \
     ${LOG_OPTS} \
     marm-app
 
-# servers
+# servers (box, integrator)
 
-docker run -d --name marm-server-box-${FULL_VERSION} \
+docker run -d --name marm-server-box-${FULL_NAME} \
     -p ${BOX_PORT}:80 \
     --net ${NETWORK} \
     --net-alias marm-server-box \
     ${LOG_OPTS} \
     marm-server-box
 
-docker run -d --name marm-server-integrator-${FULL_VERSION} \
+docker run -d --name marm-server-integrator-${FULL_NAME} \
     -P \
     --net ${NETWORK} \
     --net-alias marm-server-integrator \
@@ -61,11 +68,11 @@ docker run -d --name marm-server-integrator-${FULL_VERSION} \
 
 docker run -d --name marm-cron-${FULL_NAME} \
     --net ${NETWORK} \
-    --volumes-from marm-data-box-${FULL_VERSION} \
-    --volumes-from marm-data-integrator-${FULL_VERSION} \
+    --volumes-from marm-data-box-${FULL_NAME} \
+    --volumes-from marm-data-integrator-${FULL_NAME} \
     --volumes-from marm-data-log-${FULL_NAME} \
     ${LOG_OPTS} \
-    marm-cron-sgtn
+    marm-cron-${PROJECT}
 
 # logrotate
 
@@ -76,26 +83,26 @@ docker run -d --name marm-logrotate-${FULL_NAME} \
     marm-logrotate-${PROJECT}
 
 # php box
-docker run -d --name marm-logrotate-app-box-${FULL_VERSION} \
-    --volumes-from marm-app-box-${FULL_VERSION} \
+docker run -d --name marm-logrotate-app-box-${FULL_NAME} \
+    --volumes-from marm-app-box-${FULL_NAME} \
     ${LOG_OPTS} \
     marm-logrotate-app
 
 # php integrator
-docker run -d --name marm-logrotate-app-integrator-${FULL_VERSION} \
-    --volumes-from marm-app-integrator-${FULL_VERSION} \
+docker run -d --name marm-logrotate-app-integrator-${FULL_NAME} \
+    --volumes-from marm-app-integrator-${FULL_NAME} \
     ${LOG_OPTS} \
     marm-logrotate-app
 
 # server box
-docker run -d --name marm-logrotate-server-box-${FULL_VERSION} \
-    --volumes-from marm-server-box-${FULL_VERSION} \
+docker run -d --name marm-logrotate-server-box-${FULL_NAME} \
+    --volumes-from marm-server-box-${FULL_NAME} \
     ${LOG_OPTS} \
     marm-logrotate-server
 
 # server integrator
-docker run -d --name marm-logrotate-server-integrator-${FULL_VERSION} \
-    --volumes-from marm-server-integrator-${FULL_VERSION} \
+docker run -d --name marm-logrotate-server-integrator-${FULL_NAME} \
+    --volumes-from marm-server-integrator-${FULL_NAME} \
     ${LOG_OPTS} \
     marm-logrotate-server
 

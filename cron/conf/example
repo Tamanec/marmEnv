@@ -1,0 +1,16 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=marm2-dev@altarix.ru
+
+INTEGRATOR=/var/www/integrator
+BOX=/var/www/box
+LOGS_PATH=/var/log/marm/project/cron
+
+#--- PROJECT NAME ---#
+# x-marm-version: 2.4.9
+# x-marm-token: TOKEN
+# x-project-version: v1d1
+
+# import docs
+#0 8-20/1 * * * root ${INTEGRATOR}/protected/yiic sgtn import >> ${LOGS_PATH}/sgtn-import.log 2>&1
+

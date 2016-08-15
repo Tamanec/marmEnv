@@ -7,10 +7,10 @@ RUN apt-get install -y cron
 RUN mkdir /var/scripts && \
     chgrp devs /var/scripts && chmod g+rw /var/scripts
 
-ARG CONF_NAME
+ARG PROJECT_NAME
 
-COPY conf/$CONF_NAME /etc/cron.d/$CONF_NAME
+COPY conf/$PROJECT_NAME /etc/cron.d/$PROJECT_NAME
 
-COPY scripts/$CONF_NAME_* /var/scripts
+COPY scripts/$PROJECT_NAME_* /var/scripts
 
 CMD ["cron", "-f"]

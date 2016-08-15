@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+##
+# Безверсионные контейнеры
+#
+# fs
+# memcached
+# userfiles
+##
+
+LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
+
+#######
+# Файловое хранилище (изображения)
+#######
+
+docker create --name marm-data-fs marm-data-fs
+
+# server
+
+docker run -d --name marm-server-fs \
+    -p 8080:80 \
+    --volumes-from marm-data-fs \
+    ${LOG_OPTS} \
+    marm-server-fs
+
+# logrotate server fs
+
+docker run -d --name marm-logrotate-server-fs \
+    --volumes-from marm-server-fs \
+    ${LOG_OPTS} \
+    marm-logrotate-server
+
+#######
+# memcached
+#######
+
+docker run -d --name marm-memcached \
+    -p 11211:11211 \
+    ${LOG_OPTS} \
+    marm-memcached
+
+#######
+# userfiles
+#######
+
+docker create --name marm-data-userfiles marm-data-userfiles

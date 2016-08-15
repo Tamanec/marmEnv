@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+REGISTRY=172.29.134.38:5000
+
+docker pull ${REGISTRY}/marm-os
+docker pull ${REGISTRY}/marm-app
+docker pull ${REGISTRY}/marm-nginx
+docker pull ${REGISTRY}/marm-server-box
+docker pull ${REGISTRY}/marm-server-integrator
+docker pull ${REGISTRY}/marm-server-fs
+docker pull ${REGISTRY}/marm-data-fs
+docker pull ${REGISTRY}/marm-data-userfiles
+docker pull ${REGISTRY}/marm-memcached
+docker pull ${REGISTRY}/marm-logrotate-server
+docker pull ${REGISTRY}/marm-logrotate-app
+
+docker tag ${REGISTRY}/marm-os marm-os
+docker tag ${REGISTRY}/marm-app marm-app
+docker tag ${REGISTRY}/marm-nginx marm-nginx
+docker tag ${REGISTRY}/marm-server-box marm-server-box
+docker tag ${REGISTRY}/marm-server-integrator marm-server-integrator
+docker tag ${REGISTRY}/marm-server-fs marm-server-fs
+docker tag ${REGISTRY}/marm-data-fs marm-data-fs
+docker tag ${REGISTRY}/marm-data-userfiles marm-data-userfiles
+docker tag ${REGISTRY}/marm-memcached marm-memcached
+docker tag ${REGISTRY}/marm-logrotate-server marm-logrotate-server
+docker tag ${REGISTRY}/marm-logrotate-app marm-logrotate-app

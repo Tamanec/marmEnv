@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+########################
+# marm-memcached
+# marm-data-userfiles
+# marm-data-fs
+# marm-server-fs
+# marm-server-integrator
+# marm-server-box
+# marm-nginx
+# marm-app
+# marm-os
+#
+# Неверсионируемые образы (используются в нескольких network'ах):
+#
+# marm-server-fs
+# marm-data-fs
+# marm-data-userfiles
+# marm-memcached
+########################
+
+# base image
+docker build -t marm-os ./os/
+
+# php
+docker build -t marm-app ./app/
+
+# servers
+docker build -t marm-nginx ./nginx/
+docker build -t marm-server-box --build-arg CONF_NAME=box.conf ./server/
+docker build -t marm-server-integrator --build-arg CONF_NAME=integrator.conf ./server/
+docker build -t marm-server-fs --build-arg CONF_NAME=fs.conf ./server/
+
+########### DATA ##############
+
+# file storage
+docker build -t marm-data-fs --build-arg SOURCE_NAME=fs ./data/www/
+
+# userfiles
+docker build -t marm-data-userfiles ./data/userfiles/
+
+###############################
+
+# logrotate
+docker build -t marm-logrotate-server --build-arg PROJECT_NAME=server ./logrotate
+docker build -t marm-logrotate-app --build-arg PROJECT_NAME=app ./logrotate
+
+# memcached
+docker build -t marm-memcached ./memcached

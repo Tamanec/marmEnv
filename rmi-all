@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker rmi marm-os marm-app marm-nginx marm-memcached marm-data-userfiles marm-cron-sgtn marm-logrotate-app marm-logrotate-server marm-logrotate-sgtn marm-data-integrator marm-data-box marm-data-fs marm-data-log marm-server-fs marm-server-integrator marm-server-box
+#docker rmi marm-data-integrator:2.4.9 marm-data-box:2.4.9

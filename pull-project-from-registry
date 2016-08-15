@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Образы для разворачивания проекта
+
+[ -z $1 ] && echo "Please specify box version" && exit 1
+
+# Версия сервера
+VERSION=$1
+
+REGISTRY=172.29.134.38:5000
+
+docker pull ${REGISTRY}/marm-data-box-nadzor:${VERSION}
+docker pull ${REGISTRY}/marm-data-integrator-nadzor:${VERSION}
+docker pull ${REGISTRY}/marm-data-log-nadzor
+docker pull ${REGISTRY}/marm-cron-nadzor
+docker pull ${REGISTRY}/marm-logrotate-nadzor
+
+
+docker tag ${REGISTRY}/marm-data-box-nadzor:${VERSION} marm-data-box-nadzor:${VERSION}
+docker tag ${REGISTRY}/marm-data-integrator-nadzor:${VERSION} marm-data-integrator-nadzor:${VERSION}
+docker tag ${REGISTRY}/marm-data-log-nadzor marm-data-log-nadzor
+docker tag ${REGISTRY}/marm-cron-nadzor marm-cron-nadzor
+docker tag ${REGISTRY}/marm-logrotate-nadzor marm-logrotate-nadzor
+
