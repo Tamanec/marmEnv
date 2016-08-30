@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+[ -z $1 ] && echo "Please specify project name" && exit 1
+[ -z $2 ] && echo "Please specify box version" && exit 1
+[ -z $3 ] && echo "Please specify build number" && exit 1
+
+PROJECT=$1
+VERSION=$2
+BUILD=$3
+
+FULL_VERSION=${VERSION}.${BUILD}
+FULL_NAME=${PROJECT}-${FULL_VERSION}
+NETWORK=marm-${FULL_NAME}
+
+
+# data (code, logs ...)
+
+docker rm --force marm-data-box-${FULL_NAME}
+docker rm --force marm-data-integrator-${FULL_NAME}
+docker rm --force marm-data-log-${FULL_NAME}
+
+# php (box, integrator)
+
+docker rm --force marm-app-box-${FULL_NAME}
+docker rm --force marm-app-integrator-${FULL_NAME}
+
+# servers (box, integrator)
+
+docker rm --force marm-server-box-${FULL_NAME}
+docker rm --force marm-server-integrator-${FULL_NAME}
+
+# cron
+
+docker rm --force marm-cron-${FULL_NAME}
+
+# logrotate
+
+# project logs
+docker rm --force marm-logrotate-${FULL_NAME}
+
+# php
+docker rm --force marm-logrotate-app-box-${FULL_NAME}
+docker rm --force marm-logrotate-app-integrator-${FULL_NAME}
+
+# server
+docker rm --force marm-logrotate-server-box-${FULL_NAME}
+docker rm --force marm-logrotate-server-integrator-${FULL_NAME}
+
+
+# network
+
+docker network rm ${NETWORK}
