@@ -12,7 +12,8 @@ ARG PROJECT_NAME
 
 COPY conf/$PROJECT_NAME /etc/cron.d/$PROJECT_NAME
 
-RUN dos2unix /etc/cron.d/$PROJECT_NAME
+RUN dos2unix /etc/cron.d/$PROJECT_NAME && \
+    echo "\n" >> /etc/cron.d/$PROJECT_NAME
 
 COPY scripts/$PROJECT_NAME_* /var/scripts
 
