@@ -4,14 +4,15 @@
 #
 ########################
 
-PROJECT=sgtn
-VERSION=2.4.9
+PROJECT=nadzor
+VERSION=2.4.12
+ENV="dev"
 
 ########### DATA ##############
 
 # projects
-docker build -t marm-data-box-${PROJECT}:${VERSION} -t marm-data-box-${PROJECT}:latest --build-arg SOURCE_NAME=box ./data/www/
-docker build -t marm-data-integrator-${PROJECT}:${VERSION} -t marm-data-integrator-${PROJECT}:latest --build-arg SOURCE_NAME=integrator ./data/www/
+docker build -t marm-data-box-${PROJECT}-${ENV}:${VERSION} -t marm-data-box-${PROJECT}:latest --build-arg SOURCE_NAME=box ./data/www/
+docker build -t marm-data-integrator-${PROJECT}-${ENV}:${VERSION} -t marm-data-integrator-${PROJECT}:latest --build-arg SOURCE_NAME=integrator ./data/www/
 
 # logs
 docker build -t marm-data-log-${PROJECT} --build-arg PROJECT_NAME=${PROJECT} ./data/log/
@@ -19,7 +20,7 @@ docker build -t marm-data-log-${PROJECT} --build-arg PROJECT_NAME=${PROJECT} ./d
 ###############################
 
 # cron
-docker build -t marm-cron-${PROJECT} --build-arg PROJECT_NAME=${PROJECT} ./cron
+docker build -t marm-cron-${PROJECT}-${ENV} --build-arg PROJECT_NAME=${PROJECT} ./cron
 
 # logrotate
-docker build -t marm-logrotate-${PROJECT} --build-arg PROJECT_NAME=${PROJECT} ./logrotate
+docker build -t marm-logrotate-${PROJECT}-${ENV} --build-arg PROJECT_NAME=${PROJECT} ./logrotate

@@ -3,12 +3,61 @@
 ##
 # Безверсионные контейнеры
 #
-# fs
+# router
+# postgres
+# mongo
 # memcached
+# fs
 # userfiles
 ##
 
 LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
+
+#######
+# Router - прокси по версии и токену
+#######
+
+docker network create marm-router
+
+docker run -d --name marm-router \
+    --net marm-router \
+    -p 80:80 \
+    ${LOG_OPTS} \
+    marm-router
+
+#######
+# Postgres
+#######
+
+docker network create marm-db
+
+docker run -d --name marm-postgres \
+    --net marm-db \
+    -p 5432:5432 \
+    -v /data/postgres:/var/lib/postgresql/data \
+    ${LOG_OPTS} \
+    marm-postgres
+
+#######
+# Mongo
+#######
+
+docker run -d --name marm-mongo \
+    --net marm-db \
+    -p 27017:27017 \
+    -v /data/mongo:/data/db \
+    ${LOG_OPTS} \
+    marm-mongo
+
+#######
+# memcached
+#######
+
+docker run -d --name marm-memcached \
+    --net marm-db \
+    -p 11211:11211 \
+    ${LOG_OPTS} \
+    marm-memcached
 
 #######
 # Файловое хранилище (изображения)
@@ -30,15 +79,6 @@ docker run -d --name marm-logrotate-server-fs \
     --volumes-from marm-server-fs \
     ${LOG_OPTS} \
     marm-logrotate-server
-
-#######
-# memcached
-#######
-
-docker run -d --name marm-memcached \
-    -p 11211:11211 \
-    ${LOG_OPTS} \
-    marm-memcached
 
 #######
 # userfiles

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+[ -z $1 ] && echo "Please specify env" && exit 1
+
+ENV=$1
+
+REGISTRY=172.29.134.38:5000
+
+# Отправляет образы в локальный репозиторий
+
+docker tag marm-data-printform-${ENV} ${REGISTRY}/marm-data-printform-${ENV}
+docker tag marm-yarg ${REGISTRY}/marm-yarg
+docker tag marm-server-printform ${REGISTRY}/marm-server-printform
+
+docker push ${REGISTRY}/marm-data-printform-${ENV}
+docker push ${REGISTRY}/marm-yarg
+docker push ${REGISTRY}/marm-server-printform

@@ -7,23 +7,33 @@ REGISTRY=172.29.134.38:5000
 docker tag marm-os ${REGISTRY}/marm-os
 docker tag marm-app ${REGISTRY}/marm-app
 docker tag marm-nginx ${REGISTRY}/marm-nginx
+docker tag marm-router ${REGISTRY}/marm-router
 docker tag marm-server-box ${REGISTRY}/marm-server-box
 docker tag marm-server-integrator ${REGISTRY}/marm-server-integrator
 docker tag marm-server-fs ${REGISTRY}/marm-server-fs
+docker tag marm-server-cms ${REGISTRY}/marm-server-cms
 docker tag marm-data-fs ${REGISTRY}/marm-data-fs
+docker tag marm-data-cms ${REGISTRY}/marm-data-cms
 docker tag marm-data-userfiles ${REGISTRY}/marm-data-userfiles
 docker tag marm-memcached ${REGISTRY}/marm-memcached
 docker tag marm-logrotate-server ${REGISTRY}/marm-logrotate-server
 docker tag marm-logrotate-app ${REGISTRY}/marm-logrotate-app
+docker tag marm-postgres ${REGISTRY}/marm-postgres
+docker tag marm-mongo ${REGISTRY}/marm-mongo
 
 docker push ${REGISTRY}/marm-os
 docker push ${REGISTRY}/marm-app
 docker push ${REGISTRY}/marm-nginx
+docker push ${REGISTRY}/marm-router
 docker push ${REGISTRY}/marm-server-box
 docker push ${REGISTRY}/marm-server-integrator
 docker push ${REGISTRY}/marm-server-fs
+docker push ${REGISTRY}/marm-server-cms
 docker push ${REGISTRY}/marm-data-fs
+docker push ${REGISTRY}/marm-data-cms
 docker push ${REGISTRY}/marm-data-userfiles
 docker push ${REGISTRY}/marm-memcached
 docker push ${REGISTRY}/marm-logrotate-server
 docker push ${REGISTRY}/marm-logrotate-app
+docker push ${REGISTRY}/marm-postgres
+docker push ${REGISTRY}/marm-mongo

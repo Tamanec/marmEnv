@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+[ -z $1 ] && echo "Please specify env" && exit 1
+
+ENV=$1
+
+LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
+
+docker network create printform
+
+# printform
+
+docker create --name marm-data-printform marm-data-printform-${ENV}
+
+# app
+
+docker run -d --name marm-app-printform \
+    --net printform \
+    --volumes-from marm-data-printform \
+    ${LOG_OPTS} \
+    marm-yarg
+
+# server
+
+docker run -d --name marm-server-printform \
+    -p 8001:80 \
+    --net printform \
+    --volumes-from marm-data-printform \
+    ${LOG_OPTS} \
+    marm-server-printform

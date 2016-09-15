@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+[ -z $1 ] && echo "Please specify env" && exit 1
+
+ENV=$1
+
+# Образы для разворачивания сервиса печатных форм
+
+REGISTRY=172.29.134.38:5000
+
+docker pull ${REGISTRY}/marm-data-printform-${ENV}
+docker pull ${REGISTRY}/marm-server-printform
+docker pull ${REGISTRY}/marm-yarg
+
+
+docker tag ${REGISTRY}/marm-data-printform-${ENV} marm-data-printform-${ENV}
+docker tag ${REGISTRY}/marm-server-printform marm-server-printform
+docker tag ${REGISTRY}/marm-yarg marm-yarg
+

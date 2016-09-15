@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+PROJECT="nadzor"
+VERSION="2.4.12"
+BUILD=1
+BOX_PORT=8081
+CMS_PORT=8801
+ENV="dev"
+
+FULL_VERSION=${VERSION}.${BUILD}
+FULL_NAME=${PROJECT}-${FULL_VERSION}
+NETWORK=marm-${FULL_NAME}
+
+./run-build ${PROJECT} ${VERSION} ${BUILD} ${ENV} ${BOX_PORT} ${CMS_PORT}
+
+docker network connect ${NETWORK} marm-server-printform
+
+echo -e "\nBUILD INFO:\n"
+echo -e "env: ${ENV}"
+echo -e "project: ${PROJECT}"
+echo -e "version: ${VERSION}"
+echo -e "build: ${BUILD}"
+echo -e "box port: ${BOX_PORT}"
+echo -e "cms port: ${CMS_PORT}"
+echo -e "network: ${NETWORK}\n"
+echo -e "Connect marm-server-printform with ${NETWORK} network\n"

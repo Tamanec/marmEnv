@@ -4,7 +4,12 @@ MAINTAINER Denis Sidorov <denis.sidorov@altarix.ru>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN locale-gen ru_RU.UTF-8 && dpkg-reconfigure locales
+RUN locale-gen "ru_RU.UTF-8" && \
+    locale-gen "en_US.UTF-8" && \
+    dpkg-reconfigure locales
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update -q
 

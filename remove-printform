@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# printform
+
+docker rm -vf marm-data-printform
+
+# app
+
+docker rm -vf marm-app-printform
+
+# server
+
+docker rm -vf marm-server-printform
+
+# network
+
+docker network rm printform

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Образы для разворачивания проекта
+
+[ -z $1 ] && echo "Please specify full image name" && exit 1
+
+IMAGE=$1
+REGISTRY=172.29.134.38:5000
+
+docker tag ${IMAGE} ${REGISTRY}/${IMAGE}
+docker push ${REGISTRY}/${IMAGE}
+

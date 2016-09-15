@@ -5,3 +5,7 @@ docker ps -a | grep '2.4.9' | awk '{print $1}' | xargs --no-run-if-empty docker 
 docker rm `docker ps -a -q`
 
 docker rm `docker ps -f "status=created" -q`
+
+
+
+docker rmi $(docker images --quiet --filter "dangling=true")

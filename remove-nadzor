@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+PROJECT="nadzor"
+VERSION="2.4.12"
+BUILD=1
+
+FULL_VERSION=${VERSION}.${BUILD}
+FULL_NAME=${PROJECT}-${FULL_VERSION}
+NETWORK=marm-${FULL_NAME}
+
+docker network disconnect ${NETWORK} marm-server-printform
+
+./remove-build ${PROJECT} ${VERSION} ${BUILD}
+
+echo -e "\nREMOVED BUILD INFO:\n"
+echo -e "project: ${PROJECT}"
+echo -e "version: ${VERSION}"
+echo -e "build: ${BUILD}"
+echo -e "network: ${NETWORK}\n"
+echo -e "disconnect marm-server-printform from ${NETWORK}\n"

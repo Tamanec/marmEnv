@@ -27,14 +27,19 @@ docker build -t marm-app ./app/
 
 # servers
 docker build -t marm-nginx ./nginx/
+docker build -t marm-router ./router/
 docker build -t marm-server-box --build-arg CONF_NAME=box.conf ./server/
 docker build -t marm-server-integrator --build-arg CONF_NAME=integrator.conf ./server/
 docker build -t marm-server-fs --build-arg CONF_NAME=fs.conf ./server/
+docker build -t marm-server-cms --build-arg CONF_NAME=cms.conf ./server/
 
 ########### DATA ##############
 
 # file storage
 docker build -t marm-data-fs --build-arg SOURCE_NAME=fs ./data/www/
+
+# cms
+docker build -t marm-data-cms --build-arg SOURCE_NAME=cms ./data/www/
 
 # userfiles
 docker build -t marm-data-userfiles ./data/userfiles/
@@ -47,3 +52,9 @@ docker build -t marm-logrotate-app --build-arg PROJECT_NAME=app ./logrotate
 
 # memcached
 docker build -t marm-memcached ./memcached
+
+# postgres
+docker build -t marm-postgres ./postgres/
+
+# mongo
+docker build -t marm-mongo ./mongo/

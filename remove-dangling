@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Сборщик мусора
+
+docker rmi $(docker images --quiet --filter "dangling=true")

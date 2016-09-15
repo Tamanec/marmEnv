@@ -16,17 +16,20 @@ NETWORK=marm-${FULL_NAME}
 
 docker rm -v marm-data-box-${FULL_NAME}
 docker rm -v marm-data-integrator-${FULL_NAME}
+docker rm -v marm-data-cms-${FULL_NAME}
 docker rm -v marm-data-log-${FULL_NAME}
 
 # php (box, integrator)
 
 docker rm -vf marm-app-box-${FULL_NAME}
 docker rm -vf marm-app-integrator-${FULL_NAME}
+docker rm -vf marm-app-cms-${FULL_NAME}
 
 # servers (box, integrator)
 
 docker rm -vf marm-server-box-${FULL_NAME}
 docker rm -vf marm-server-integrator-${FULL_NAME}
+docker rm -vf marm-server-cms-${FULL_NAME}
 
 # cron
 
@@ -37,17 +40,15 @@ docker rm -vf marm-cron-${FULL_NAME}
 # project logs
 docker rm -vf marm-logrotate-${FULL_NAME}
 
-# php box
+# php
 docker rm -vf marm-logrotate-app-box-${FULL_NAME}
-
-# php integrator
 docker rm -vf marm-logrotate-app-integrator-${FULL_NAME}
+docker rm -vf marm-logrotate-app-cms-${FULL_NAME}
 
 # server box
 docker rm -vf marm-logrotate-server-box-${FULL_NAME}
-
-# server integrator
 docker rm -vf marm-logrotate-server-integrator-${FULL_NAME}
+docker rm -vf marm-logrotate-server-cms-${FULL_NAME}
 
 # remove network
 docker network rm ${NETWORK}

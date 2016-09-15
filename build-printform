@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+ENV=dev
+
+# data
+
+docker build -t marm-data-printform-${ENV} --build-arg SOURCE_NAME=printform ./data/www/
+
+# yarg
+
+docker build -t marm-yarg ./yarg
+
+# server
+
+docker build -t marm-server-printform --build-arg CONF_NAME=printform.conf ./server/
