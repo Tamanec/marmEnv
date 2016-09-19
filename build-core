@@ -13,6 +13,7 @@
 #
 # Неверсионируемые образы (используются в нескольких network'ах):
 #
+# marm-router
 # marm-server-fs
 # marm-data-fs
 # marm-data-userfiles

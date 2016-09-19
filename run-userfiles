@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
-
-# userfiles
-
-docker create --name marm-data-userfiles marm-data-userfiles

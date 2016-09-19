@@ -145,9 +145,11 @@ docker run -d --name marm-logrotate-server-cms-${FULL_NAME} \
 docker network connect marm-router marm-server-box-${FULL_NAME}
 docker network connect marm-router marm-server-cms-${FULL_NAME}
 docker network connect marm-db marm-app-box-${FULL_NAME}
+docker network connect marm-db marm-app-integrator-${FULL_NAME}
 docker network connect marm-db marm-cron-${FULL_NAME}
 
 echo -e "\nConnect marm-server-box-${FULL_NAME} to marm-router network"
 echo -e "Connect marm-server-cms-${FULL_NAME} to marm-router network"
 echo -e "Connect marm-app-box-${FULL_NAME} to marm-db network"
+echo -e "Connect marm-app-integrator-${FULL_NAME} to marm-db network"
 echo -e "Connect marm-cron-${FULL_NAME} to marm-db network\n"
