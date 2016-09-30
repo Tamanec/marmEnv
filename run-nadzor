@@ -13,6 +13,12 @@ NETWORK=marm-${FULL_NAME}
 
 ./run-build ${PROJECT} ${VERSION} ${BUILD} ${ENV} ${BOX_PORT} ${CMS_PORT}
 
+# скачиваем wsdl
+docker exec -it marm-cron-nadzor-2.4.12.1 /bin/bash -c 'curl http://77.247.243.35:1024/nadzor_service/NadzorService.asmx?WSDL -o /var/www/integrator/protected/runtime/nadzor.wsdl &> /var/log/marm/nadzor/cron/wsdl.log && cp /var/www/integrator/protected/runtime/nadzor.wsdl /var/www/box/protected/runtime/nadzor.wsdl'
+
+# запуск миграций
+docker exec -it marm-app-box-nadzor-2.4.12.1 /var/www/box/protected/yiic migrate --migrationPath=application.migrations.nadzor --connectionID=db_nadzor --interactive=0
+
 docker network connect ${NETWORK} marm-server-printform
 
 echo -e "\nBUILD INFO:\n"

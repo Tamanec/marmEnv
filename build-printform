@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-ENV=dev
+[ -z $1 ] && echo "Please specify env" && exit 1
+
+ENV=$1
 
 # data
 

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+[ -z $1 ] && echo "Please specify env" && exit 1
+
+ENV=$1
+
+ssh ${ENV} ./pull-printform-from-registry ${ENV}
+
+ssh ${ENV} ./remove-printform
+
+ssh ${ENV} ./run-printform ${ENV}
+
+ssh ${ENV} docker network connect marm-nadzor-2.4.12.1 marm-server-printform
+
+echo -e "\nConnect marm-server-printform with marm-nadzor-2.4.12.1 \n"

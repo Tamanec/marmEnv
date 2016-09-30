@@ -8,7 +8,7 @@ REGISTRY=172.29.134.38:5000
 
 # Отправляет образы в локальный репозиторий
 
-docker tag marm-data-printform-${ENV} ${REGISTRY}/marm-data-printform-${ENV}
+docker tag docker build -t marm-data-printform-${ENV} --build-arg SOURCE_NAME=printform ./data/www/${ENV} ${REGISTRY}/marm-data-printform-${ENV}
 docker tag marm-yarg ${REGISTRY}/marm-yarg
 docker tag marm-server-printform ${REGISTRY}/marm-server-printform
 
