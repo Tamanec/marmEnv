@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ "$1" = 'mongod' ]; then
+if [ "$1" = 'mongod' ] && [ ! -f /data/db/admin.ns ]; then
     mongod --fork --logpath /var/log/mongodb.log --smallfiles
     sleep 10
     mongo admin /tmp/create-user.js

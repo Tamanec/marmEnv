@@ -4,11 +4,11 @@
 
 ENV=$1
 
-ssh ${ENV} ./pull-printform-from-registry ${ENV}
+ssh ${ENV} ./pull-printform-from-registry
 
 ssh ${ENV} ./remove-printform
 
-ssh ${ENV} ./run-printform ${ENV}
+ssh ${ENV} ./run-printform
 
 ssh ${ENV} docker network connect marm-nadzor-2.4.12.1 marm-server-printform
 

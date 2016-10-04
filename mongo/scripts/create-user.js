@@ -9,4 +9,3 @@ db.addUser(
         ]
     }
 );
-//db.createCollection("test");

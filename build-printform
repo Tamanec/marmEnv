@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 
-[ -z $1 ] && echo "Please specify env" && exit 1
-
-ENV=$1
-
 # data
 
-docker build -t marm-data-printform-${ENV} --build-arg SOURCE_NAME=printform ./data/www/
+docker build -t marm-data-printform --build-arg SOURCE_NAME=printform ./data/www/
 
 # yarg
 

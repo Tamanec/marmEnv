@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+##
+# Безверсионные контейнеры
+#
+# router
+# postgres
+# mongo
+# memcached
+# fs
+# userfiles
+##
+
+#######
+# Router - прокси по версии и токену
+#######
+
+docker rm -vf marm-router
+
+#######
+# Postgres
+#######
+
+docker rm -vf marm-postgres
+
+#######
+# Mongo
+#######
+
+docker rm -vf marm-mongo
+
+#######
+# memcached
+#######
+
+docker rm -vf marm-memcached
+
+#######
+# Файловое хранилище (изображения)
+#######
+
+docker rm -v marm-data-fs
+
+# server
+
+docker rm -vf marm-server-fs
+
+# logrotate server fs
+
+docker rm -vf marm-logrotate-server-fs
+
+#######
+# userfiles
+#######
+
+docker rm -v marm-data-userfiles
