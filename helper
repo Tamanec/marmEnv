@@ -6,6 +6,14 @@ docker rm `docker ps -a -q`
 
 docker rm `docker ps -f "status=created" -q`
 
-
-
+# подвисшие образы
 docker rmi $(docker images --quiet --filter "dangling=true")
+
+
+# подвисшие вольюмы
+docker volume ls -qf dangling=true
+docker volume rm $(docker volume ls -qf dangling=true)
+
+
+# просмотр всех вольюмов
+docker inspect -f '{{ .Config.Volumes }}' $(docker ps -qa)

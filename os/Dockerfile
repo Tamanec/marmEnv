@@ -23,4 +23,7 @@ RUN groupadd devs && \
     usermod -g devs root && \
     mkdir /var/www && chgrp devs /var/www && chmod g+rw /var/www
 
+ENV TZ Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 CMD ["bash"]
