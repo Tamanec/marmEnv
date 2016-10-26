@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# shared для dev/qa/uat
+
+[ -z $1 ] && echo "Please specify project name" && exit 1
+
+# Версия сервера
+PROJECT=$1
+
+docker build -t marm-router-${PROJECT} --build-arg PROJECT=${PROJECT} ./router/

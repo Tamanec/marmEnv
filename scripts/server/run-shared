@@ -16,14 +16,7 @@ LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
 #######
 # Router - прокси по версии и токену
 #######
-
 docker network create marm-router
-
-docker run -d --name marm-router \
-    --net marm-router \
-    -p 80:80 \
-    ${LOG_OPTS} \
-    marm-router
 
 #######
 # Postgres

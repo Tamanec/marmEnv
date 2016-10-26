@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+[ -z $1 ] && echo "Please specify project name" && exit 1
+[ -z $2 ] && echo "Please specify box version" && exit 1
+[ -z $3 ] && echo "Please specify build number" && exit 1
+
+PROJECT=$1
+VERSION=$2
+BUILD=$3
+
+FULL_VERSION=${VERSION}.${BUILD}
+RELEASE_PATH=/var/www/releases/${PROJECT}/${FULL_VERSION}
+
+set -e
+
+cd ${RELEASE_PATH}/box && git pull
+cd ${RELEASE_PATH}/integrator && git pull
+
+
+docker run --rm --volume ${RELEASE_PATH}/box:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
+docker run --rm --volume ${RELEASE_PATH}/integrator:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'

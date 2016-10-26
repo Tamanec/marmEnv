@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Образы для разворачивания проекта
+
+[ -z $1 ] && echo "Please specify project name" && exit 1
+
+PROJECT=$1
+
+REGISTRY=172.29.134.38:5000
+
+docker tag marm-data-log-${PROJECT} ${REGISTRY}/marm-data-log-${PROJECT}
+docker tag marm-cron-${PROJECT} ${REGISTRY}/marm-cron-${PROJECT}
+docker tag marm-logrotate-${PROJECT} ${REGISTRY}/marm-logrotate-${PROJECT}
+
+docker push ${REGISTRY}/marm-data-log-${PROJECT}
+docker push ${REGISTRY}/marm-cron-${PROJECT}
+docker push ${REGISTRY}/marm-logrotate-${PROJECT}
+

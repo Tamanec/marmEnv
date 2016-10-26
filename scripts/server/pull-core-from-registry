@@ -17,7 +17,6 @@ docker pull ${REGISTRY}/marm-logrotate-server
 docker pull ${REGISTRY}/marm-logrotate-app
 docker pull ${REGISTRY}/marm-postgres
 docker pull ${REGISTRY}/marm-mongo
-docker pull ${REGISTRY}/marm-router
 
 docker tag ${REGISTRY}/marm-os marm-os
 docker tag ${REGISTRY}/marm-app marm-app
@@ -34,4 +33,4 @@ docker tag ${REGISTRY}/marm-logrotate-server marm-logrotate-server
 docker tag ${REGISTRY}/marm-logrotate-app marm-logrotate-app
 docker tag ${REGISTRY}/marm-postgres marm-postgres
 docker tag ${REGISTRY}/marm-mongo marm-mongo
-docker tag ${REGISTRY}/marm-router marm-router
+

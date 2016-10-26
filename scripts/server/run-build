@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+
+[ -z $1 ] && echo "Please specify project name" && exit 1
+[ -z $2 ] && echo "Please specify box version" && exit 1
+[ -z $3 ] && echo "Please specify build number" && exit 1
+[ -z $4 ] && echo "Please specify port number for box" && exit 1
+[ -z $5 ] && echo "Please specify port number for cms" && exit 1
+
+PROJECT=$1
+VERSION=$2
+BUILD=$3
+BOX_PORT=$4
+CMS_PORT=$5
+
+FULL_VERSION=${VERSION}.${BUILD}
+FULL_NAME=${PROJECT}-${FULL_VERSION}
+NETWORK=marm-${FULL_NAME}
+
+# Проверяем наличие кода проектов для data-контейнеров
+[ ! -d /var/www/releases/${PROJECT}/${FULL_VERSION}/box ] && echo -e "Project directory for box doesn't exist. Check path: /var/www/releases/${PROJECT}/${FULL_VERSION}/box" && exit 1
+[ ! -d /var/www/releases/${PROJECT}/${FULL_VERSION}/integrator ] && echo -e "Project directory for integrator doesn't exist. Check path: /var/www/releases/${PROJECT}/${FULL_VERSION}/integrator" && exit 1
+
+LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
+
+# create network
+
+docker network create ${NETWORK}
+
+# data (code, logs ...)
+
+docker create --name marm-data-box-${FULL_NAME} --volume /var/www/releases/${PROJECT}/${FULL_VERSION}/box:/var/www/box marm-os
+docker create --name marm-data-integrator-${FULL_NAME} --volume /var/www/releases/${PROJECT}/${FULL_VERSION}/integrator:/var/www/integrator marm-os
+docker create --name marm-data-log-${FULL_NAME} marm-data-log-${PROJECT}
+docker create --name marm-data-cms-${FULL_NAME} marm-data-cms
+
+# php (box, integrator, cms)
+
+docker run -d --name marm-app-box-${FULL_NAME} \
+    --net ${NETWORK} \
+    --net-alias marm-app-box \
+    --volumes-from marm-data-box-${FULL_NAME} \
+    --volumes-from marm-data-log-${FULL_NAME} \
+    --volumes-from marm-data-userfiles \
+    ${LOG_OPTS} \
+    marm-app
+
+docker run -d --name marm-app-integrator-${FULL_NAME} \
+    --net ${NETWORK} \
+    --net-alias marm-app-integrator \
+    --volumes-from marm-data-integrator-${FULL_NAME} \
+    --volumes-from marm-data-log-${FULL_NAME} \
+    --volumes-from marm-data-userfiles \
+    ${LOG_OPTS} \
+    marm-app
+
+docker run -d --name marm-app-cms-${FULL_NAME} \
+    --net ${NETWORK} \
+    --net-alias marm-app-cms \
+    --volumes-from marm-data-cms-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-app
+
+# servers (box, integrator, cms)
+
+docker run -d --name marm-server-box-${FULL_NAME} \
+    -p ${BOX_PORT}:80 \
+    --net ${NETWORK} \
+    --net-alias marm-server-box \
+    ${LOG_OPTS} \
+    marm-server-box
+
+docker run -d --name marm-server-integrator-${FULL_NAME} \
+    -P \
+    --net ${NETWORK} \
+    --net-alias marm-server-integrator \
+    ${LOG_OPTS} \
+    marm-server-integrator
+
+docker run -d --name marm-server-cms-${FULL_NAME} \
+    -p ${CMS_PORT}:80 \
+    --net ${NETWORK} \
+    --net-alias marm-server-cms \
+    --volumes-from marm-data-cms-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-server-cms
+
+# cron
+
+docker run -d --name marm-cron-${FULL_NAME} \
+    --net ${NETWORK} \
+    --volumes-from marm-data-box-${FULL_NAME} \
+    --volumes-from marm-data-integrator-${FULL_NAME} \
+    --volumes-from marm-data-log-${FULL_NAME} \
+    --volumes-from marm-data-userfiles \
+    ${LOG_OPTS} \
+    marm-cron-${PROJECT}
+
+# logrotate
+
+# project logs
+docker run -d --name marm-logrotate-${FULL_NAME} \
+    --volumes-from marm-data-log-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-logrotate-${PROJECT}
+
+# php box
+docker run -d --name marm-logrotate-app-box-${FULL_NAME} \
+    --volumes-from marm-app-box-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-logrotate-app
+
+# php integrator
+docker run -d --name marm-logrotate-app-integrator-${FULL_NAME} \
+    --volumes-from marm-app-integrator-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-logrotate-app
+
+# php cms
+docker run -d --name marm-logrotate-app-cms-${FULL_NAME} \
+    --volumes-from marm-app-cms-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-logrotate-app
+
+# server box
+docker run -d --name marm-logrotate-server-box-${FULL_NAME} \
+    --volumes-from marm-server-box-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-logrotate-server
+
+# server integrator
+docker run -d --name marm-logrotate-server-integrator-${FULL_NAME} \
+    --volumes-from marm-server-integrator-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-logrotate-server
+
+# server cms
+docker run -d --name marm-logrotate-server-cms-${FULL_NAME} \
+    --volumes-from marm-server-cms-${FULL_NAME} \
+    ${LOG_OPTS} \
+    marm-logrotate-server
+
+#######
+# Connect networks
+#######
+
+docker network connect marm-router marm-server-box-${FULL_NAME}
+docker network connect marm-router marm-server-cms-${FULL_NAME}
+docker network connect marm-db marm-app-box-${FULL_NAME}
+docker network connect marm-db marm-app-integrator-${FULL_NAME}
+docker network connect marm-db marm-cron-${FULL_NAME}
+
+
+
+echo -e "\nConnect marm-server-box-${FULL_NAME} to marm-router network"
+echo -e "Connect marm-server-cms-${FULL_NAME} to marm-router network"
+echo -e "Connect marm-app-box-${FULL_NAME} to marm-db network"
+echo -e "Connect marm-app-integrator-${FULL_NAME} to marm-db network"
+echo -e "Connect marm-cron-${FULL_NAME} to marm-db network\n"

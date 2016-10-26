@@ -10,7 +10,7 @@ NETWORK=marm-${FULL_NAME}
 
 docker network disconnect ${NETWORK} marm-server-printform
 
-./remove-build ${PROJECT} ${VERSION} ${BUILD}
+remove-build ${PROJECT} ${VERSION} ${BUILD}
 
 echo -e "\nREMOVED BUILD INFO:\n"
 echo -e "project: ${PROJECT}"

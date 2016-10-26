@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+PROJECT="mgsn"
+VERSION="2.4.12"
+BUILD=1
+BOX_PORT=8082
+CMS_PORT=8802
+
+FULL_VERSION=${VERSION}.${BUILD}
+FULL_NAME=${PROJECT}-${FULL_VERSION}
+NETWORK=marm-${FULL_NAME}
+
+./run-build ${PROJECT} ${VERSION} ${BUILD} ${BOX_PORT} ${CMS_PORT}
+
+# запуск миграций
+docker exec marm-app-box-mgsn-2.4.12.1 /var/www/box/protected/yiic migrate --migrationPath=application.migrations.mgsn --connectionID=db_mgsn --interactive=0
+
+echo -e "\nBUILD INFO:\n"
+echo -e "env: ${ENV}"
+echo -e "project: ${PROJECT}"
+echo -e "version: ${VERSION}"
+echo -e "build: ${BUILD}"
+echo -e "box port: ${BOX_PORT}"
+echo -e "cms port: ${CMS_PORT}"
+echo -e "network: ${NETWORK}\n"

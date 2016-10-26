@@ -16,8 +16,6 @@ CMS_PORT=$6
 FULL_VERSION=${VERSION}.${BUILD}
 FULL_NAME=${PROJECT}-${FULL_VERSION}
 NETWORK=marm-${FULL_NAME}
-#BOX_PORT=4${FULL_VERSION//./} - старая версия
-
 
 LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
 
@@ -27,8 +25,8 @@ docker network create ${NETWORK}
 
 # data (code, logs ...)
 
-docker create --name marm-data-box-${FULL_NAME} marm-data-box-${PROJECT}-${ENV}:${VERSION}
-docker create --name marm-data-integrator-${FULL_NAME} marm-data-integrator-${PROJECT}-${ENV}:${VERSION}
+docker create --name marm-data-box-${FULL_NAME} --volume /var/www/box:/var/www/box marm-os
+docker create --name marm-data-integrator-${FULL_NAME} --volume /var/www/integrator:/var/www/integrator marm-os
 docker create --name marm-data-log-${FULL_NAME} marm-data-log-${PROJECT}
 docker create --name marm-data-cms-${FULL_NAME} marm-data-cms
 
@@ -92,7 +90,7 @@ docker run -d --name marm-cron-${FULL_NAME} \
     --volumes-from marm-data-log-${FULL_NAME} \
     --volumes-from marm-data-userfiles \
     ${LOG_OPTS} \
-    marm-cron-${PROJECT}-${ENV}
+    marm-cron-${PROJECT}
 
 # logrotate
 
@@ -100,7 +98,7 @@ docker run -d --name marm-cron-${FULL_NAME} \
 docker run -d --name marm-logrotate-${FULL_NAME} \
     --volumes-from marm-data-log-${FULL_NAME} \
     ${LOG_OPTS} \
-    marm-logrotate-${PROJECT}-${ENV}
+    marm-logrotate-${PROJECT}
 
 # php box
 docker run -d --name marm-logrotate-app-box-${FULL_NAME} \
@@ -142,11 +140,15 @@ docker run -d --name marm-logrotate-server-cms-${FULL_NAME} \
 # Connect networks
 #######
 
+docker network create marm-router
+
 docker network connect marm-router marm-server-box-${FULL_NAME}
 docker network connect marm-router marm-server-cms-${FULL_NAME}
 docker network connect marm-db marm-app-box-${FULL_NAME}
 docker network connect marm-db marm-app-integrator-${FULL_NAME}
 docker network connect marm-db marm-cron-${FULL_NAME}
+
+
 
 echo -e "\nConnect marm-server-box-${FULL_NAME} to marm-router network"
 echo -e "Connect marm-server-cms-${FULL_NAME} to marm-router network"
