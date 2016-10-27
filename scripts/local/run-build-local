@@ -3,15 +3,14 @@
 [ -z $1 ] && echo "Please specify project name" && exit 1
 [ -z $2 ] && echo "Please specify box version" && exit 1
 [ -z $3 ] && echo "Please specify build number" && exit 1
-[ -z $4 ] && echo "Please specify env" && exit 1
-[ -z $5 ] && echo "Please specify port number for box" && exit 1
+[ -z $4 ] && echo "Please specify port number for box" && exit 1
+[ -z $5 ] && echo "Please specify port number for cms" && exit 1
 
 PROJECT=$1
 VERSION=$2
 BUILD=$3
-ENV=$4
-BOX_PORT=$5
-CMS_PORT=$6
+BOX_PORT=$4
+CMS_PORT=$5
 
 FULL_VERSION=${VERSION}.${BUILD}
 FULL_NAME=${PROJECT}-${FULL_VERSION}
