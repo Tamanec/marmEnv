@@ -24,8 +24,8 @@ git clone ssh://git@party.altarix.ru:2222/integrator.git
 cd ${RELEASE_PATH}/box && git checkout ${BRANCH}
 cd ${RELEASE_PATH}/integrator && git checkout ${BRANCH}
 
-sudo chmod 777 ${RELEASE_PATH}/box/protected/runtime
-sudo chmod 777 ${RELEASE_PATH}/integrator/protected/runtime
+sudo chmod 777 -R ${RELEASE_PATH}/box/protected/runtime
+sudo chmod 777 -R ${RELEASE_PATH}/integrator/protected/runtime
 
 docker run --rm --volume ${RELEASE_PATH}/box:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
 docker run --rm --volume ${RELEASE_PATH}/integrator:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
