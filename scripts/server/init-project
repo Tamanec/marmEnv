@@ -11,18 +11,21 @@ BUILD=$3
 BRANCH=$4
 
 FULL_VERSION=${VERSION}.${BUILD}
-PATH=/var/www/releases/${PROJECT}/${FULL_VERSION}
+RELEASE_PATH=/var/www/releases/${PROJECT}/${FULL_VERSION}
 
 set -e
 
-mkdir -p ${PATH}
-cd ${PATH}
+mkdir -p ${RELEASE_PATH}
+cd ${RELEASE_PATH}
 
 git clone ssh://git@party.altarix.ru:2222/box.git
 git clone ssh://git@party.altarix.ru:2222/integrator.git
 
-cd ${PATH}/box && git checkout ${BRANCH}
-cd ${PATH}/integrator && git checkout ${BRANCH}
+cd ${RELEASE_PATH}/box && git checkout ${BRANCH}
+cd ${RELEASE_PATH}/integrator && git checkout ${BRANCH}
 
-docker run --rm --volume ${PATH}/box:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
-docker run --rm --volume ${PATH}/integrator:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
+sudo chmod 777 ${RELEASE_PATH}/box/protected/runtime
+sudo chmod 777 ${RELEASE_PATH}/integrator/protected/runtime
+
+docker run --rm --volume ${RELEASE_PATH}/box:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
+docker run --rm --volume ${RELEASE_PATH}/integrator:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'

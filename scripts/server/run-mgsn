@@ -16,7 +16,6 @@ NETWORK=marm-${FULL_NAME}
 docker exec marm-app-box-mgsn-2.4.12.1 /var/www/box/protected/yiic migrate --migrationPath=application.migrations.mgsn --connectionID=db_mgsn --interactive=0
 
 echo -e "\nBUILD INFO:\n"
-echo -e "env: ${ENV}"
 echo -e "project: ${PROJECT}"
 echo -e "version: ${VERSION}"
 echo -e "build: ${BUILD}"

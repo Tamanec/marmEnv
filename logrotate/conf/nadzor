@@ -1,7 +1,7 @@
-/var/log/marm/projectName/*.log {
+/var/log/marm/nadzor/*.log {
     daily
     rotate 14
-    olddir /var/log/marm/projectName/archive
+    olddir /var/log/marm/nadzor/archive
     dateext
     compress
     notifempty
@@ -9,10 +9,10 @@
     copytruncate
 }
 
-/var/log/marm/projectName/cron/*.log {
+/var/log/marm/nadzor/cron/*.log {
     daily
     rotate 14
-    olddir /var/log/marm/projectName/cron/archive
+    olddir /var/log/marm/nadzor/cron/archive
     dateext
     compress
     notifempty
@@ -20,10 +20,10 @@
     copytruncate
 }
 
-/var/log/marm/projectName/service/*.log {
+/var/log/marm/nadzor/service/*.log {
     daily
     rotate 14
-    olddir /var/log/marm/projectName/service/archive
+    olddir /var/log/marm/nadzor/service/archive
     dateext
     compress
     notifempty
@@ -31,10 +31,10 @@
     copytruncate
 }
 
-/var/log/marm/integrator/box-requests/projectName/*.log {
+/var/log/marm/integrator/box-requests/nadzor/*.log {
     daily
     rotate 14
-    olddir /var/log/marm/integrator/box-requests/projectName/archive
+    olddir /var/log/marm/integrator/box-requests/nadzor/archive
     dateext
     compress
     notifempty

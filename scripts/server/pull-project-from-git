@@ -13,9 +13,12 @@ RELEASE_PATH=/var/www/releases/${PROJECT}/${FULL_VERSION}
 
 set -e
 
+export LC_ALL=en_US.UTF-8
+
 cd ${RELEASE_PATH}/box && git pull
 cd ${RELEASE_PATH}/integrator && git pull
 
-
 docker run --rm --volume ${RELEASE_PATH}/box:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
 docker run --rm --volume ${RELEASE_PATH}/integrator:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
+
+docker exec marm-app-box-${PROJECT}-${FULL_VERSION} /var/www/box/protected/yiic migrate --migrationPath=application.migrations.${PROJECT} --connectionID=db_${PROJECT} --interactive=0
