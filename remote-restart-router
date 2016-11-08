@@ -5,7 +5,7 @@
 ENV=$1
 LOG_OPTS="--log-driver=json-file --log-opt max-size=100m --log-opt max-file=3"
 
-ssh ${ENV} ./pull-image-from-registry marm-router
+ssh ${ENV} ./pull-image-from-registry marm-router-shared
 
 ssh ${ENV} docker rm -vf marm-router
 
@@ -13,5 +13,5 @@ ssh ${ENV} docker run -d --name marm-router \
     --net marm-router \
     -p 80:80 \
     ${LOG_OPTS} \
-    marm-router
+    marm-router-shared
 

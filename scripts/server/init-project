@@ -24,6 +24,9 @@ git clone ssh://git@party.altarix.ru:2222/integrator.git
 cd ${RELEASE_PATH}/box && git checkout ${BRANCH}
 cd ${RELEASE_PATH}/integrator && git checkout ${BRANCH}
 
+sudo chgrp dev -R ${RELEASE_PATH}
+sudo chmod g+rwX -R ${RELEASE_PATH}
+
 sudo chmod 777 -R ${RELEASE_PATH}/box/protected/runtime
 sudo chmod 777 -R ${RELEASE_PATH}/integrator/protected/runtime
 

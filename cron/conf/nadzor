@@ -43,6 +43,8 @@ LOGS_PATH=/var/log/marm/nadzor/cron
 0 15 * * * www-data ${BOX}/protected/yiic nadzor importReference --tableName=organization_law_type >> ${LOGS_PATH}/nadzor_cron.log
 0 15 * * * www-data ${BOX}/protected/yiic nadzor importReference --tableName=odh_violation_type_update >> ${LOGS_PATH}/nadzor_cron.log
 0 15 * * * www-data ${BOX}/protected/yiic nadzor importReference --tableName=gost_regulations_update >> ${LOGS_PATH}/nadzor_cron.log
+5 15 * * * www-data ${BOX}/protected/yiic nadzor updateOdhViolationType >> ${LOGS_PATH}/nadzor_cron.log
+5 15 * * * www-data ${BOX}/protected/yiic nadzor updateReferenceRliminationPeriod >> ${LOGS_PATH}/nadzor_cron.log
 
 # Зависимые справочники
 0 15 * * * www-data ${BOX}/protected/yiic nadzor importReference --tableName=inspection_object_type >> ${LOGS_PATH}/nadzor_cron.log

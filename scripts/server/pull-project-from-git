@@ -18,6 +18,9 @@ export LC_ALL=en_US.UTF-8
 cd ${RELEASE_PATH}/box && git pull
 cd ${RELEASE_PATH}/integrator && git pull
 
+sudo chgrp dev -R ${RELEASE_PATH}
+sudo chmod g+rwX -R ${RELEASE_PATH}
+
 docker run --rm --volume ${RELEASE_PATH}/box:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
 docker run --rm --volume ${RELEASE_PATH}/integrator:/var/www marm-app /bin/bash -c 'cd /var/www/protected && composer install'
 

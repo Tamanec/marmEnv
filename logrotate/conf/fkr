@@ -1,0 +1,43 @@
+/var/log/marm/fkr/*.log {
+    daily
+    rotate 14
+    olddir /var/log/marm/fkr/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}
+
+/var/log/marm/fkr/cron/*.log {
+    daily
+    rotate 14
+    olddir /var/log/marm/fkr/cron/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}
+
+/var/log/marm/fkr/service/*.log {
+    daily
+    rotate 14
+    olddir /var/log/marm/fkr/service/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}
+
+/var/log/marm/integrator/box-requests/fkr/*.log {
+    daily
+    rotate 14
+    olddir /var/log/marm/integrator/box-requests/fkr/archive
+    dateext
+    compress
+    notifempty
+    missingok
+    copytruncate
+}
