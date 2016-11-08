@@ -16,11 +16,13 @@ NETWORK=marm-${FULL_NAME}
 
 docker start marm-app-box-${FULL_NAME}
 docker start marm-app-integrator-${FULL_NAME}
+docker start marm-app-cms-${FULL_NAME}
 
 # servers (box, integrator)
 
 docker start marm-server-box-${FULL_NAME}
 docker start marm-server-integrator-${FULL_NAME}
+docker start marm-server-cms-${FULL_NAME}
 
 # cron
 

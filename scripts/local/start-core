@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+
+#######
+# Postgres
+#######
+
+docker start marm-postgres
+
+#######
+# Mongo
+#######
+
+docker start marm-mongo
+
+#######
+# memcached
+#######
+
+docker start marm-memcached
+
+#######
+# Файловое хранилище (изображения)
+#######
+
+# server
+
+docker start marm-server-fs
+
+# logrotate server fs
+
+docker start marm-logrotate-server-fs
