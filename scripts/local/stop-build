@@ -16,11 +16,13 @@ NETWORK=marm-${FULL_NAME}
 
 docker stop marm-app-box-${FULL_NAME}
 docker stop marm-app-integrator-${FULL_NAME}
+docker stop marm-app-cms-${FULL_NAME}
 
 # servers (box, integrator)
 
 docker stop marm-server-box-${FULL_NAME}
 docker stop marm-server-integrator-${FULL_NAME}
+docker stop marm-server-cms-${FULL_NAME}
 
 # cron
 
