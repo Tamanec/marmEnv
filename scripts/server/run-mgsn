@@ -15,6 +15,8 @@ NETWORK=marm-${FULL_NAME}
 # запуск миграций
 docker exec marm-app-box-mgsn-2.4.12.1 /var/www/box/protected/yiic migrate --migrationPath=application.migrations.mgsn --connectionID=db_mgsn --interactive=0
 
+docker network connect marm-router marm-server-integrator-${FULL_NAME}
+
 echo -e "\nBUILD INFO:\n"
 echo -e "project: ${PROJECT}"
 echo -e "version: ${VERSION}"
@@ -22,3 +24,4 @@ echo -e "build: ${BUILD}"
 echo -e "box port: ${BOX_PORT}"
 echo -e "cms port: ${CMS_PORT}"
 echo -e "network: ${NETWORK}\n"
+echo -e "Connect marm-server-integrator-${FULL_NAME} with marm-router network\n"
